@@ -4,13 +4,8 @@ import Header from '../../components/Header'
 import { getChargeWeight } from '../../lib/functions'
 import * as yup from 'yup'
 import axios from 'axios'
-import { Country, State, City} from 'country-state-city'
 import { getAllCountries, getStatesByCountry, getCitiesByCountryAndState, getCitiesByCountry } from '../api/location'
 
-// let countries = Country.getAllCountries().map((country) => {
-//   return {name: country.name,
-//   isoCode: country.isoCode}
-// })
 
 const reducer = (state, action) => {
     state[action.field]= action.payload
