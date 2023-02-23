@@ -49,10 +49,6 @@ const infoInputList = [
   {
     field: 'email',
     name: 'Email'
-  },
-  {
-    field: 'country',
-    name: 'Country'
   }
 ]
 const receiverInputList = [
@@ -159,7 +155,7 @@ function PackInput({packInput, dispatchPack}) {
 
 
 export default function BillOnline({countries, initStates, initCities}) {
-  
+
   let yupShipperInput = yup.object().shape({
     companyName: yup.string().required('Company name is required'),
     contactName: yup.string().required('Contact name is required'),
@@ -188,7 +184,7 @@ export default function BillOnline({countries, initStates, initCities}) {
       telNumber: '',
       taxCode: '',
       email: '',
-      country: '',
+      country: 'Vietnam',
       type: 'DOC'
   }
   let receiverInputInitData = {}
@@ -258,7 +254,8 @@ export default function BillOnline({countries, initStates, initCities}) {
     .catch(err => {err.inner.map((error) => invalid[error.path] = error.message )})
     setInvalidList(invalid)
     if (JSON.stringify(invalid) === '{}') {
-      console.log({...infoInput, ...receiverInput, locationInfo})
+      let shipping = infoInput.type === 'DOC' ? docInput : packInput
+      console.log({infoInput, receiverInput, locationInfo, shipping})
     }
   }
     
@@ -277,6 +274,14 @@ export default function BillOnline({countries, initStates, initCities}) {
               <p className='text-sm text-red-500'>{invalidList[input.field]}</p>
             </div> 
           )}
+          <div className='flex justify-between'>
+            <p className='my-auto inline-block w-32'>Country:</p>
+            <select className={inputClass} value={infoInput['country']} onChange={(e) => dispatchInfo({field: 'country', payload: e.target.value})}>
+              {countries.map((country) => 
+                <option value={country.name}>{country.name}</option>
+              )}
+            </select>
+          </div>
         </div>
         <div className='w-5/12'>
           {receiverInputList.map((input, index) =>
